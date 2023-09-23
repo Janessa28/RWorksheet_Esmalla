@@ -14,6 +14,25 @@ data <-c(2.4,2.8,2.1,2.5,2.4,2.2,2.5,2.3,2.5,2.3,2.4,2.7)
 length(data)
 
 data * 2
+seq.int(1,100)
+length(seq.int(1,100))
+
+seq(20,60)
+length(seq(20,60))
+
+(mean(20:60))
+length(mean(20:60))
+
+
+(sum(51:91))
+length(sum(51:91))
+
+Filter(function(i) { all(i %% c(2,3,7) != 0) }, seq(100))
+
+seq(100,1)
+length(seq(100,1))
+
+
 
 
 
