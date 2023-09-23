@@ -27,6 +27,9 @@ length(mean(20:60))
 (sum(51:91))
 length(sum(51:91))
 
+seq(1,25)
+
+
 
 
 
