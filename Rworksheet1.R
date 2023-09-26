@@ -51,6 +51,11 @@ OneTo1000
 SumOfAll <-(+length(OneTo100)+length(TwentyTo60)+length(MeanOf20To60)+length(SumOf51To91))
 SumOfAll
 
+new_max10 <- seq(1:10)
+max_Until_10 <- max(new_max10)
+max_Until_10
+
+
 #9
 Filter(function(i) { all(i %% c(3,5,7) != 0) }, seq(100))
 sum(Filter(function(i) { all(i %% c(3,5,7) != 0) }, seq(100)))
