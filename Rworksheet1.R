@@ -1,22 +1,22 @@
 #1
-vector_age <- c(34,28,22,36,27,18,52,39,42,29,35,31,27,22,37,34,19,20,57,49,50,37,46,25,17,37,42,53,41,51,35,24,33,41)
+Vector_Age <- c(34,28,22,36,27,18,52,39,42,29,35,31,27,22,37,34,19,20,57,49,50,37,46,25,17,37,42,53,41,51,35,24,33,41)
 
-length(vector_age)
+length(Vector_Age)
 
 #2
-reciprocal_age <- 1/vector_age
-reciprocal_age
+reciprocal_Age <- 1/Vector_Age
+reciprocal_Age
 
 #3
-new_age <- c(vector_age,0,vector_age)
-new_age
+new_Age <- c(Vector_Age,0,Vector_Age)
+new_Age
 
 #4
- sort(new_age)
+ sort(new_Age)
 #5
- max(vector_age)
+ max(Vector_Age)
 
- min(vector_age)
+ min(Vector_Age)
 #6
 vector_data <-c(2.4,2.8,2.1,2.5,2.4,2.2,2.5,2.3,2.5,2.3,2.4,2.7)
 vector_data
@@ -74,8 +74,6 @@ natural_num
 
 #12
 
-{x <- 0 + x + 5 +}
-
 #the function cannot display an output because of the positive sign in number 5 
 # and the curly braces are not being used as a block or it is a part of the valid code.
 #It should be this
@@ -104,17 +102,15 @@ x
 
 #15
  
- name =readline(prompt="Janessa Marie Esmalla")
- age =readline(prompt = "19")
- print(paste("My name is",name,"and I am",age,"years old"))
- print(R.version.string)
- My_Name <-c ("Janessa Marie Esmalla")
- My_Name
- 
- #the output is My Name is,and the name that you input(Janessa Marie Esmalla),
- # and I am, the input age that you put (19),years old.
- 
+name = readline(prompt = "Input your name:\n")
 
+age = readline(prompt = "Input your age:")
 
+print(paste("My name is",name,"and I am",age,"years old ."))
+
+print(R.version.string)
+
+#the output is My name is, and the name that you input(Janessa Marie Esmalla),
+#and I am, the input age that you put (19),years old
 
 
