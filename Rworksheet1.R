@@ -2,11 +2,12 @@
 vector_age <- c(34,28,22,36,27,18,52,39,42,29,35,31,27,22,37,34,19,20,57,49,50,37,46,25,17,37,42,53,41,51,35,24,33,41)
 
 length(vector_age)
+
 #2
 reciprocal_age <- 1/vector_age
 reciprocal_age
-#3
 
+#3
 new_age <- c(vector_age,0,vector_age)
 new_age
 
@@ -71,26 +72,33 @@ rev(reverse_sequence)
 natural_num<- Filter(function(i) { all(i %% 3==0|| i %% 5==0 )}, seq(24))
 natural_num
 
-
-#11a
-
-
-
 #12
- x <- 0+ x + 5 +
+
+{x <- 0 + x + 5 +}
+
+#the function cannot display an output because of the positive sign in number 5 
+# and the curly braces are not being used as a block or it is a part of the valid code.
+#It should be this
+ {x <- 0
+  x <-x + 5 
+ }
+
+x
 
 
 #13
  score <-c(72,86,89,92,63,88,89,91,92,75,75,77)
- element10 <- score[10]
-  element11 <- score[11]
+ element2 <- score[2]
+  element3 <- score[3]
   
-  element10
-  element11
+  element2
+  element3
  
 #14
  
- a <- c(1,2,NA,4,NA,6,7)
+ vector_a <- c(1,2,NA,4,NA,6,7)
+ vector_a
+ 
  print(a,na.print ="999")
  
 
@@ -102,6 +110,10 @@ natural_num
  print(R.version.string)
  My_Name <-c ("Janessa Marie Esmalla")
  My_Name
+ 
+ #the output is My Name is,and the name that you input(Janessa Marie Esmalla),
+ # and I am, the input age that you put (19),years old.
+ 
 
 
 
