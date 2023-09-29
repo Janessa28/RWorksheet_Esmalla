@@ -79,7 +79,37 @@ vector_sequence
   data
   
 #8
-  
+#Create vectors with updated variable names
+
+celebrities <- c("Tom Cruise", "Rolling Stones", "Oprah Winfrey", "U2", "Tiger Woods", "Steven Spielberg", "Howard Stern", "50 Cent", "Cast of the Sopranos", "Dan Brown", "Bruce Springsteen", "Donald Trump", "Muhammad Ali", "Paul McCartney", "George Lucas", "Elton John", "David Letterman", "Phil Mickelson", "J.K Rowling", "Bradd Pitt", "Peter Jackson", "Dr. Phil McGraw", "Jay Lenon", "Celine Dion", "Kobe Bryant")
+
+power <- c(1, 2, 3, 4, 5, 6, 7 ,8 , 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25)
+
+pay_amount <- c(67, 90,225,110,90,332,302,41,52,88,55,44,55,40,233,34,40,47,75,25,39,45,32,40,31)
+
+celeb_data <- data.frame(Celebrity = celebrities, Power_Ranking = power, Pay_Amount = pay_amount)
+
+View(celeb_data)
+
+#b
+celeb_data$Power_Ranking[celeb_data$Celebrity == "J.K Rowling"] <- 15
+celeb_data$Pay_Amount[celeb_data$Celebrity == "J.K Rowling"] <- 90
+celeb_data
+
+View(celeb_data)
+
+#c
+write.csv(celeb_data, "/cloud/project/PowerRanking.csv")
+PowerRanking <- read.csv("PowerRanking.csv")
+PowerRanking
+
+#d
+subset_data <- celeb_data[10:20, ]
+save(subset_data, file = "Ranks.RData")
+
+#e From the original data frame, rows 10 to 20 are chosen, saved as Ranks.RData, and then printed as the output by this script.q
+
+#9  
   install.packages("readxl")
   library(readxl)
   
