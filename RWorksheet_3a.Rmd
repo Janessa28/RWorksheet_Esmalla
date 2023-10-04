@@ -1,0 +1,93 @@
+#1
+#a
+first_11_letters <- LETTERS[1:11]
+first_11_letters
+
+#b
+odd_numbered_letters <- LETTERS[seq(1, length(LETTERS), by = 2)]
+odd_numbered_letters
+
+#c
+vowels <- LETTERS[LETTERS %in% c("A", "E", "I", "O", "U")]
+vowels
+
+#d
+last_5_lowercase <- tail(letters, 5)
+last_5_lowercase
+
+#e
+letters_15_to_24 <- letters[15:24]
+letters_15_to_24
+
+
+city <- c("Tuguegarao City", "Manila", "Iloilo City", "Tacloban", "Samal Island", "Davao City")
+city
+
+
+temp <- c(42, 39, 34, 34, 30, 27)
+temp
+
+df <- data.frame(City = city, Temperature = temp)
+df
+
+names(df) <- c("City", "Temperature")
+names(df)
+
+str(df)
+
+df[3, ]
+df[4, ]
+
+
+# City with the highest temperature
+max_temp_city <- df[df$Temperature == max(df$Temperature), "City"]
+
+# City with the lowest temperature
+min_temp_city <- df[df$Temperature == min(df$Temperature), "City"]
+
+max_temp_city
+min_temp_city
+
+
+
+
+mat <- matrix(c(1:8, 11:14), nrow = 3, ncol = 4)
+mat
+
+mat * 2
+
+
+mat[2, ]
+
+
+mat[1:2, 3:4]
+
+
+mat[3, 2:3]
+
+
+mat[, 4]
+
+
+rownames(mat) <- c("isa", "dalawa", "tatlo")
+colnames(mat) <- c("uno", "dos", "tres", "quatro")
+mat
+
+
+dim(mat) <- c(6, 2)
+mat
+
+
+numeric_values <- c(1, 2, 3, 6, 7, 8, 9, 0, 3, 4, 5, 1)
+repeated_values <- rep(numeric_values, each = 2)
+array_3d <- array(repeated_values, dim = c(2, 4, 3))
+
+
+rownames(array_3d) <- letters[1:2]
+colnames(array_3d) <- LETTERS[1:4]
+dimnames(array_3d) <- list("1st-Dimensional Array", "2nd-Dimensional Array", "3rd-Dimensional Array")
+
+
+
+
+
