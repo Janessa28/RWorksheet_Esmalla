@@ -1,3 +1,8 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 #1
 #a
 first_11_letters <- LETTERS[1:11]
