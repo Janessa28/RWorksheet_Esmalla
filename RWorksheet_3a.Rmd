@@ -1,8 +1,4 @@
----
-output:
-  pdf_document: default
-  html_document: default
----
+
 #1
 #a
 first_11_letters <- LETTERS[1:11]
@@ -89,9 +85,13 @@ array_3d <- array(repeated_values, dim = c(2, 4, 3))
 
 
 rownames(array_3d) <- letters[1:2]
-colnames(array_3d) <- LETTERS[1:4]
-dimnames(array_3d) <- list("1st-Dimensional Array", "2nd-Dimensional Array", "3rd-Dimensional Array")
+rownames(array_3d)
 
+colnames(array_3d) <- LETTERS[1:4]
+colnames(array_3d)
+
+dimnames(array_3d) <- list("1st-Dimensional Array", "2nd-Dimensional Array", "3rd-Dimensional Array")
+dimnames(array_3d) 
 
 
 
