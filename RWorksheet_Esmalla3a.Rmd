@@ -1,0 +1,137 @@
+---
+title: "RWorksheet_Esmalla3a"
+author: "Janessa Marie Esmalla"
+date: "2023-10-07"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r name, echo = TRUE} 
+
+# 1.There is a built-in vector LETTERS contains the uppercase letters of the alphabet and letters which contains the lowercase letters of the alphabet.
+
+# 1a. You need to produce a vector that contains the first 11 letters.
+first_11_letters <- LETTERS[1:11]
+first_11_letters
+
+# 1b. Produce a vector that contains the odd numbered letters.
+odd_numbered_letters <- LETTERS[seq(1, length(LETTERS), by = 2)]
+odd_numbered_letters
+
+# 1c. Produce a vector that contains the vowels
+vowels <- LETTERS[LETTERS %in% c("A", "E", "I", "O", "U")]
+vowels
+
+
+# Based on the above vector letters:
+
+lower_Alphabet <- letters[1:26]
+lower_Alphabet
+
+# 1d. Produce a vector that contains the last 5 lowercase letters.
+last_five_let <- letters[22:26]
+last_five_let
+
+# 1e. Produce a vector that contains letters between 15 to 24 letters in lowercase.
+letters_15_to_24 <- letters[15:24]
+letters_15_to_24
+
+# 2. Create a vector(not a dataframe) with the average temperatures in April for Tugue-garao City, Manila, Iloilo City, Tacloban, Samal Island, and Davao City. The average temperatures in Celcius are 42, 39, 34, 34, 30, and 27 degrees.
+
+# 2a. What is the R code and its result for creating a character vector for the city/town of Tuguegarao City, Manila, Iloilo City, Tacloban,Samal Island, and Davao City? Name the object as city. The names should follow the same order as in the instruction 
+city <- c("Tuguegarao City", "Manila", "Iloilo City", "Tacloban", "Samal Island", "Davao City")
+city
+
+# 2b. The average temperatures in Celcius are 42, 39, 34, 34, 30, and 27 degrees.Name the object as temp.
+temp <- c(42, 39, 34, 34, 30, 27)
+temp
+
+# 2c. Create a dataframe to combine the city and the temp by using ‘data.frame(). What the R code and its result?
+data_temp <- data.frame(City = city, Temperature = temp)
+data_temp
+
+# 2d. Associate the dataframe you have created in 2.(c) by naming the columns using the names() function. Change the column names by using names() function as City and Temperature.
+names(data_temp) <- c("City", "Temperature")
+names(data_temp)
+
+# 2e. Print the structure by using str() function. Describe the output.
+str(data_temp)
+
+# 2f. From the answer in d, what is the content of row 3 and row 4 What is its R code and its output?
+row_temp <- data_temp[3:4, ]
+row_temp
+
+# City with the highest temperature
+max_temp_city <- data_temp[data_temp$Temperature == max(data_temp$Temperature), "City"]
+max_temp_city
+
+# City with the lowest temperature
+min_temp_city <- data_temp[data_temp$Temperature == min(data_temp$Temperature), "City"]
+min_temp_city
+
+
+
+# USING MATRIX
+
+# 3a.
+mat <- matrix(c(1:8, 11:14), nrow = 3, ncol = 4)
+mat
+
+# 3b.
+mat * 2
+mat
+
+# 3c.
+mat[2, ]
+mat
+
+# 3d
+mat[1:2, 3:4]
+mat
+
+# 3e.
+mat[3, 2:3]
+mat
+
+# 3f.
+mat[, 4]
+mat
+
+# 3g.
+rownames(mat) <- c("isa", "dalawa", "tatlo")
+rownames(mat)
+
+colnames(mat) <- c("uno", "dos", "tres", "quatro")
+colnames(mat)
+
+
+dim(mat) <- c(6, 2)
+mat
+
+
+# USING ARRAYS
+
+# 4 An array contains 1, 2, 3, 6, 7, 8, 9, 0, 3, 4, 5, 1
+my_array <- c(1, 2, 3, 6, 7, 8, 9, 0, 3, 4, 5, 1)
+my_array
+
+# 4a.
+new_array <- array(my_array , dim = c(2, 4 ,3))
+new_array
+
+# 4b.
+dim(new_array)
+
+# 4c.
+colnames(new_array) <- c("A","B","C","D")
+new_array
+
+rownames(new_array) <- c("a","b")
+new_array
+
+dimnames(new_array)[[3]] <- c("1st-Dimensional Array", "2nd-Dimensional Array", "3rd-Dimensional Array")
+new_array
