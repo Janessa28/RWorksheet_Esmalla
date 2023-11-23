@@ -6,41 +6,251 @@ output: pdf_document
 ---
 
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
 
-1a. Show your solutions on how to import a csv file into the environment.
+ 1a. Show your solutions on how to import a csv file into the environment. 
+
+```{r} 
+ library(readr) 
+ mpg_file <- read_csv("mpg.csv") 
+ mpg_file
+```
+
+ 1b.Which variables from mpg dataset are categorical? -->
+```{r}
+
+ str(mpg_file) 
+
+#manufacturer
+#model 
+#trans
+#drv 
+#fl 
+#class 
+``` 
+
+1c. Which are continuous variables? 
+```{r} 
+ str(mpg_file) 
+ #displ 
+ #year 
+ #cyl 
+ #cty
+ #hwy 
+``` 
+
+2. Which manufacturer has the most models in this data set? Which model has the most variations? 
+ Show your answer.
+```{r} 
+ manufacturer_asTable <- table(mpg_file$manufacturer) 
+names(manufacturer_asTable)[which.max(manufacturer_asTable)] 
+
+ # dodge manufacturer has the most models 
+ model_asTable <- table(mpg_file$model) 
+
+ model_asTable 
+
+ names(model_asTable)[which.max(model_asTable)]
+ # caravan 2wd has the most variations
+``` 
+
+ 2.a Group the manufacturers and find the unique models. Show your codes and result. 
+```{r} 
+
+manufacturers_models <- data.frame(Manufacturer = mpg_file$manufacturer, Model = mpg_file$model) 
+
+unique_mods <- unique(manufacturers_models) 
+unique_mods 
+unique_mods$mpg_file.model 
+
+``` 
+
+2.b Graph the result by using plot() and ggplot(). Write the codes and its result
+ 
+```{r} 
+
+
+
+``` 
+
+
+2.  Same dataset will be used. You are going to show the relationship of the modeland the manufacturer.
+
+
+
+2a.  What does ggplot(mpg, aes(model, manufacturer)) + geom_point() show?
+
+```{r}
+#This plot will display points representing the relationship between car models and their respective manufacturers. Each point would represent a unique combination of a car model and its manufacturer.
+
+
+```
+
+2b.  For you, is it useful? If not, how could you modify the data to make it more informative?
+
+```{r}
+#This visualization might not be very useful if there are many models or manufacturers, as the points might overlap, making it hard to interpret. To improve this, you could aggregate the data to show summary statistics per manufacturer or model. For instance, average fuel efficiency per manufacturer or other aggregated metrics might provide more informative insights.
+```
+
+3.Plot the model and the year using ggplot(). Use only the top 20 observations. Write the codes and its results.
+
+```{r}
+library(ggplot2)
+
+
+top_20 <- head(mpg_file, 20)
+
+
+ggplot(top_20, aes(x = model, y = year)) +
+  geom_point() +
+  labs(title = "Top 20 Observations: Model vs. Year", x = "Model", y = "Year") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))  
+
+```
+
+4.Using the pipe (%\>%), group the model and get the number of cars per model. Show codes and its result.
+
+```{r}
+
+library(dplyr)
+
+
+cars_per_model <- mpg_file %>%
+count(model)  
+
+```
+
+4a.  Plot using geom_bar() using the top 20 observations only. The graphs shoudl have a title, labels and colors. Show code and results.
+
+```{r}
+library(ggplot2)
+
+# Extracting the top 20 observations
+top_20 <- head(mpg_file, 20)
+
+
+ggplot(top_20, aes(x = model)) +
+  geom_bar(fill = "skyblue", color = "black") +
+  labs(title = "Number of Cars per Model (Top 20)", x = "Model", y = "Number of Cars") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) 
+```
+
+4b.  Plot using the geom_bar() + coord_flip() just like what is shown below. Show codes and its result.
+
+```{r}
+
+ggplot(cars_per_model, aes(x = model, y = n)) +
+  geom_bar(stat = "identity", fill = "salmon", color = "black") +
+  labs(title = "Number of Cars per Model", x = "Model", y = "Number of Cars") +
+  coord_flip()
+
+
+```
+
+5.Plot the relationship between cyl - number of cylinders and displ - engine displacement using geom_point with aesthetic color = engine displacement. Title should be "Relationship between No. of Cylinders and Engine Displacement". a. How would you describe its relationship? Show the codes and its result.
+
+```{r}
+library(ggplot2)
+
+# Plotting relationship between cyl and displ with color mapped to displ
+ggplot(mpg_file, aes(x = cyl, y = displ, color = displ)) +
+  geom_point() +
+  labs(title = "Relationship between No. of Cylinders and Engine Displacement",
+       x = "Number of Cylinders", y = "Engine Displacement") +
+  scale_color_continuous(name = "Engine Displacement")  # Adding a color legend
+
+```
+
+6.Import the traffic.csv onto your R
 
 ```{r}
 library(readr)
-mpg_file <- read_csv("Rworksheet_Esmalla#4/mpg.csv")
-mpg_file
-```
+traffic <- read_csv("traffic.csv")
 
-1b.Which variables from mpg dataset are categorical?
-```{r}
-#manufacturer
-#model
-#trans
-#drv
-#fl
-#class
+traffic
 
 ```
 
+6a.  How many numbers of observation does it have? What are the variables of the traffic dataset the Show your answer.
 
-1c. Which are continuous variables?
 ```{r}
-#displ
-#year
-#cyl
-#cty
-#hwy
+num_observations <- nrow(traffic)
+
+num_variables <- ncol(traffic)
+
+
+print(paste("Number of observations:", num_observations))
+print(paste("Number of variables:", num_variables))
+
+
+names(traffic)
 
 
 ```
-2.
+
+6b.  subset the traffic dataset into junctions. What is the R codes and its output?
 
 ```{r}
-manufacturer <-c("Audi","Chervolet","Dogde","Ford","Honda","Hyundai","Jeep","Land Rover","Licoln","Mercury","Nissan","Pontiac","Subaru","Toyota","Volkswagen")
-manufacturer
+unique_junctions <- unique(traffic$junctions)
 
-unique_manu <-c("a4", "a4 quattro","a6 quattro")
+
+junction_data <- lapply(unique_junctions, function(junction) {
+  subset_data <- subset(traffic, junctions == junction)
+  return(subset_data)
+})
+
+junction_data
+
+
+
+```
+
+6c.  Plot each junction in a using geom_line(). Show your solution and output.
+
+```{r}
+library(ggplot2)
+
+
+plot_list <- lapply(junction_data, function(junction) {
+  ggplot(junction, aes(x = time, y = traffic_volume)) + geom_line() + ggtitle("Traffic Volume")
+})
+
+
+plot_list 
+
+```
+
+7.  From alexa_file.xlsx, import it to your environment
+
+```{r}
+library(readxl)
+alexa_file <- read_xlsx("alexa_file.xlsx")
+alexa_file
+```
+
+a.  How many observations does alexa_file has? What about the number of columns? Show your solution and answer.
+
+```{r}
+
+nrow(alexa_file)
+ncol(alexa_file)
+
+```
+
+7b.  group the variations and get the total of each variations. Use dplyr package. Show solution and answer.
+
+```{r}
+
+
+```
+
+7c.  Plot the variations using the ggplot() function. What did you observe? Complete the details of the graph. Show solution and answer.
+
+```{r}
+
+
+
+
+```
