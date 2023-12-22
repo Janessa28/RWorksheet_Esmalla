@@ -1,0 +1,109 @@
+---
+title: "Final Project in CS 101"
+author: Jessa Octavio, Janessa Marie Esmalla,Jocedel Garnette Doronila,Shane Capaque,
+
+                                 Ross Camille Tamayor
+date: "2023-12-22"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+
+library(rvest)
+library(dplyr)
+
+library (kableExtra)
+
+scrape_reviews <- function(url) {
+  page <- read_html(url)
+  
+  user <- page %>% html_nodes(".display-name-link") %>% html_text()
+  date <- page %>% html_nodes(".review-date") %>% html_text()
+  rating <- page %>% html_nodes(".rating-other-user-rating") %>% html_text()
+  comment_title <- page %>% html_nodes(".title") %>% html_text()
+  comment <- page %>% html_nodes(".text.show-more__control") %>% html_text()
+  
+  reviews <- data.frame(User = user, Date = date, Rating = rating, Title = comment_title, Comment = comment)
+  return(reviews)
+}
+
+scrape_multiple_pages <- function(base_url, reviews_per_page = 10, total_reviews_target = 300) {
+  all_reviews <- data.frame()
+  num_pages <- ceiling(total_reviews_target / reviews_per_page)
+  
+  for (page_num in 1:num_pages) {
+    url <- paste0(base_url, "&start=", (page_num - 1) * reviews_per_page)
+    reviews <- scrape_reviews(url)
+    all_reviews <- bind_rows(all_reviews, reviews)
+    
+    if (nrow(all_reviews) >= total_reviews_target) {
+      break
+    }
+  }
+  
+  return(all_reviews)
+}
+
+base_url <- "https://www.imdb.com/title/tt2380307/reviews?ref_=tt_urv"
+
+all_reviews <- scrape_multiple_pages(base_url, reviews_per_page = 10, total_reviews_target = 300)
+
+write.csv(all_reviews, "imdb_reviews.csv", row.names = FALSE)
+
+knitr::kable(all_reviews, caption = "Reviews on Coco Movie", ouput_format = "pdf_document") %>%
+  kable_styling(font_size = 7)
+
+```
+
+
+```{r}
+
+library(tidytext)
+library(dplyr)
+library(ggplot2)
+library(wordcloud)
+
+all_reviews <- read.csv("imdb_reviews.csv")
+
+all_reviews_sentiments <- all_reviews %>%
+  mutate(Comment = as.character(Comment)) %>%
+  unnest_tokens(word, Comment) %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(User, Sentiment = sentiment) %>%
+  arrange(desc(n))
+
+
+sentiment_plot <- all_reviews_sentiments %>%
+  ggplot(aes(x = Sentiment, y = n, fill = Sentiment)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Sentiment Distribution in Coco Movie Reviews", x = "Sentiment", y = "Count") +
+  theme_minimal()
+
+
+word_frequency <- all_reviews %>%
+  mutate(Comment = as.character(Comment)) %>%
+  unnest_tokens(word, Comment) %>%
+  count(word) %>%
+  arrange(desc(n)) %>%
+  head(100)  
+
+word_cloud_plot <- wordcloud(words = word_frequency$word, freq = word_frequency$n, max.words = 100, colors = brewer.pal(8, "Dark2"))
+
+
+ggsave("sentiment_distribution.png", sentiment_plot, width = 8, height = 6)
+ggsave("word_cloud.png", word_cloud_plot, width = 8, height = 6)
+
+
+sentiment_description <- "The bar plot illustrates the distribution of sentiments across the Coco movie reviews."
+word_cloud_description <- "The word cloud represents the most frequent words found in the comments of the Coco movie reviews."
+
+
+descriptions <- c(sentiment_description, word_cloud_description)
+writeLines(descriptions, "visualization_descriptions.txt")
+```
+
+"The word cloud represents prominent themes and keywords related to the movie"Coco".It showcases prevalent words like 'musician,' 'family,' 'Mexico,'animated,' and 'characters,' offering a visual snapshot of essential elements associated with the film."

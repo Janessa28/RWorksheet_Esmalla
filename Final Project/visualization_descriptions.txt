@@ -1,0 +1,2 @@
+The bar plot illustrates the distribution of sentiments across the Coco movie reviews.
+The word cloud represents the most frequent words found in the comments of the Coco movie reviews.
