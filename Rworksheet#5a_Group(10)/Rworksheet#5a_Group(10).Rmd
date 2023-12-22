@@ -1,0 +1,634 @@
+---
+title: "RworkSheet#5a_Group(10)"
+author: Janessa Marie Esmalla,Jessa Octavio,Shane Capaque,Ross Camille Tamayor,Jocedel
+  Garnette Doronila
+date: "2023-12-22"
+output: pdf_document
+keep_tex: true
+  
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. Each group needs to extract the top 50 tv shows in Imdb.com. It will include the rank, the title of the
+tv show, tv rating, the number of people who voted, the number of episodes, the year it was released.
+
+```{r}
+
+library(rvest)
+library(httr)
+library(dplyr) 
+library(polite)
+library(tidyverse)
+
+library(kableExtra)
+
+
+
+polite::use_manners(save_as = 'polite_scrape.R')
+url <- 'https://www.imdb.com/chart/toptv/?ref_=nv_tvv_250'
+session <- bow(url,
+               user_agent = "Educational")
+session
+
+rank_title <- character(0)
+links <- character(0)
+
+
+title_list <- scrape(session) %>%
+  html_nodes("h3.ipc-title__text") %>%
+  html_text
+
+imdb <- read_html(url)
+
+#ranks
+ranks <- scrape(session) %>%
+html_nodes("div.sc-94da5b1b-0") %>%
+  html_text
+ranks
+cleaned_ranks <- substr(ranks,1,2)
+
+ranks50<- cleaned_ranks[1:50]
+ranks50
+
+#titles
+titles <- scrape(session) %>%
+  html_nodes("h3.ipc-title__text") %>%
+  html_text
+titles
+titles50 <- titles[2:51]
+titles50
+
+#ratings
+ratings <- scrape(session) %>%
+html_nodes("span.ipc-rating-star.ipc-rating-star--base.ipc-rating-star--imdb.ratingGroup--imdb-rating") %>%
+  html_text
+
+cleaned_ratings <- substr(ratings,1,3)
+cleaned_ratings
+ratings50 <- cleaned_ratings[1:50]
+ratings50
+
+
+#peoples vote
+people_vote <- scrape(session)%>%
+  html_nodes("span.ipc-rating-star--voteCount")%>%
+  html_text()
+
+people_vote50 <- people_vote[1:50]
+people_vote50
+
+cleaned_vote <- gsub("\\(|\\)", "", people_vote50)
+cleaned_vote
+
+#episodes
+
+episodes <- scrape(session)%>%
+  html_nodes("span.sc-43986a27-8:nth-of-type(2)") %>%
+  html_text()
+episodes50 <- episodes[1:50]
+episodes50
+
+
+#year
+year <- scrape(session)%>%
+  html_nodes("span.sc-43986a27-8:nth-of-type(1)") %>%
+  html_text()
+year50 <- year[1:50]
+year50
+
+#dataframe
+topTv_df <- data.frame(Titles = titles50,
+                       Ranks = ranks50,
+                       Ratings = ratings50,
+                       People_Votes = cleaned_vote,
+                       Episodes = episodes50,
+                       Year = year50
+                       )
+topTv_df
+
+```
+
+
+
+
+
+
+
+```{r}
+knitr::kable(topTv_df, caption = "IMDb Top 50 TV Shows", ouput_format = "pdf_document") %>%
+  kable_styling(font_size = 9)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```
+
+
+
+
+2. From the 50 tv shows, select at least 5 tv shows to scrape the user reviews that will include the reviewer’s name, date of reviewed, user rating, title of the review, and text reviews.
+ 
+
+
+ Arcane (2021)
+
+```{r}
+
+
+
+Arcane_link <-("https://www.imdb.com/title/tt11126994/reviews?ref_=tt_urv")
+
+session2 <- bow(Arcane_link, user_agent = "Educational Purposes")
+session2
+
+
+Arcane_Title <- scrape(session2)%>%
+  html_nodes("a[itemprop='url']") %>%
+  html_text()
+Arcane_Title
+
+Arcane_Review_Name <- scrape(session2)%>%
+  html_nodes(".display-name-link a") %>%
+  html_text()
+Arcane_Review_Name
+
+Arcane_Review_Date <- scrape(session2) %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+Arcane_Review_Date
+
+Arcane_UserRating <- scrape(session2) %>%
+  html_nodes("span.rating-other-user-rating") %>%
+  html_text() %>% str_trim()
+Arcane_UserRating
+
+Arcane_TitleReview <- scrape(session2) %>%
+  html_nodes(" a.title") %>%
+  html_text()
+Arcane_TitleReview2 <- gsub("\n ","", Arcane_TitleReview)
+Arcane_TitleReview2
+
+Arcane_Text_Review <- scrape(session2) %>%
+  html_nodes("div.text") %>%
+  html_text()
+Arcane_Text_Review
+
+Arcane_Df <- data.frame(Tv_Shows = Arcane_Title,
+                             Reviewer_Name =Arcane_Review_Name[1:5],
+                             Reviewer_Date = Arcane_Review_Date[1:5],
+                             Reviewer_Rating = Arcane_UserRating[1:5],
+                             Title_Review = Arcane_TitleReview2[1:5],
+                             Text_Review = Arcane_Text_Review[1:5])
+Arcane_Df
+
+
+```
+
+
+ The Wire (2002-2008)
+
+```{r}
+The_Wire_link <-("https://www.imdb.com/title/tt0306414/reviews?ref_=tt_urv")
+
+session2 <- bow(The_Wire_link, user_agent = "Educational Purposes")
+session2
+
+
+The_Wire_Title <- scrape(session2)%>%
+  html_nodes("a[itemprop='url']") %>%
+  html_text()
+The_Wire_Title
+
+The_Wire_Review_Name <- scrape(session2)%>%
+  html_nodes(".display-name-link a") %>%
+  html_text()
+The_Wire_Review_Name
+
+The_Wire_Review_Date <- scrape(session2) %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+The_Wire_Review_Date
+
+The_Wire_UserRating <- scrape(session2) %>%
+  html_nodes("span.rating-other-user-rating") %>%
+  html_text() %>% str_trim()
+The_Wire_UserRating
+
+The_Wire_TitleReview <- scrape(session2) %>%
+  html_nodes(" a.title") %>%
+  html_text()
+The_Wire_TitleReview2 <- gsub("\n ","", The_Wire_TitleReview)
+The_Wire_TitleReview2
+
+The_Wire_Text_Review <- scrape(session2) %>%
+  html_nodes("div.text") %>%
+  html_text()
+The_Wire_Text_Review
+
+The_Wire_Df <- data.frame(Tv_Shows = The_Wire_Title,
+                             Reviewer_Name = The_Wire_Review_Name[1:5],
+                             Reviewer_Date = The_Wire_Review_Date[1:5],
+                             Reviewer_Rating = The_Wire_UserRating[1:5],
+                             Title_Review = The_Wire_TitleReview2[1:5],
+                             Text_Review = The_Wire_Text_Review[1:5])
+The_Wire_Df
+
+
+```
+  The Office (2005)
+
+```{r}
+
+
+TheOffice_link <- "https://www.imdb.com/title/tt0386676/reviews/?ref_=tt_ql_2"
+session3 <- bow(TheOffice_link, user_agent = "Educational Purposes")
+session3
+
+
+
+TheOffice_Title <- scrape(session3)%>%
+  html_nodes("a[itemprop='url']") %>%
+  html_text()
+TheOffice_Title
+
+TheOffice_Review_Name <- scrape(session3)%>%
+  html_nodes(".display-name-link a") %>%
+  html_text()
+TheOffice_Review_Name
+
+TheOffice_Review_Date <- scrape(session3) %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+TheOffice_Review_Date
+
+TheOffice_User_Rating <- scrape(session3) %>%
+  html_nodes("span.rating-other-user-rating") %>%
+  html_text() %>% str_trim()
+TheOffice_User_Rating
+
+
+TheOffice_Title_Review <- scrape(session3) %>%
+  html_nodes(" a.title") %>%
+  html_text() %>% str_trim()
+TheOffice_Title_Review
+
+
+TheOffice_Text_Review <- scrape(session3) %>%
+  html_nodes("div.text") %>%
+  html_text()
+TheOffice_Text_Review
+
+TheOffice_Df <- data.frame(  Tv_Shows = TheOffice_Title,
+                             Reviewer_Name = TheOffice_Review_Name[1:5],
+                             Reviewer_Date = TheOffice_Review_Date[1:5],
+                             Reviewer_Rating = TheOffice_User_Rating[1:5],
+                             Title_Review = TheOffice_Title_Review[1:5],
+                             Text_Review = TheOffice_Text_Review[1:5])
+TheOffice_Df
+
+
+```
+
+Fullmetal Alchemist:Brotherhood (2009)
+```{r}
+
+
+
+
+Fullmetal_Alchemist_Brotherhood_link <-("https://www.imdb.com/title/tt1355642/reviews?ref_=tt_urv")
+
+session2 <- bow(
+Fullmetal_Alchemist_Brotherhood_link, user_agent = "Educational Purposes")
+session2
+
+
+
+Fullmetal_Alchemist_Brotherhood_Title <- scrape(session2)%>%
+  html_nodes("a[itemprop='url']") %>%
+  html_text()
+
+Fullmetal_Alchemist_Brotherhood_Title
+
+
+Fullmetal_Alchemist_Brotherhood_Review_Name <- scrape(session2)%>%
+  html_nodes(".display-name-link a") %>%
+  html_text()
+
+Fullmetal_Alchemist_Brotherhood_Review_Name
+
+
+Fullmetal_Alchemist_Brotherhood_Review_Date <- scrape(session2) %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+
+Fullmetal_Alchemist_Brotherhood_Review_Date
+
+
+Fullmetal_Alchemist_Brotherhood_UserRating <- scrape(session2) %>%
+  html_nodes("span.rating-other-user-rating") %>%
+  html_text() %>% str_trim()
+
+Fullmetal_Alchemist_Brotherhood_UserRating
+
+
+Fullmetal_Alchemist_Brotherhood_TitleReview <- scrape(session2) %>%
+  html_nodes(" a.title") %>%
+  html_text()
+
+Fullmetal_Alchemist_Brotherhood_TitleReview2 <- gsub("\n ","", 
+Fullmetal_Alchemist_Brotherhood_TitleReview)
+
+Fullmetal_Alchemist_Brotherhood_TitleReview2
+
+
+Fullmetal_Alchemist_Brotherhood_Text_Review <- scrape(session2) %>%
+  html_nodes("div.text") %>%
+  html_text()
+
+Fullmetal_Alchemist_Brotherhood_Text_Review
+
+Fullmetal_Alchemist_Brotherhood_Df <- data.frame(Tv_Shows = 
+Fullmetal_Alchemist_Brotherhood_Title,
+                             Reviewer_Name =
+Fullmetal_Alchemist_Brotherhood_Review_Name[1:5],
+                             Reviewer_Date = 
+Fullmetal_Alchemist_Brotherhood_Review_Date[1:5],
+                             Reviewer_Rating = 
+Fullmetal_Alchemist_Brotherhood_UserRating[1:5],
+                             Title_Review = 
+Fullmetal_Alchemist_Brotherhood_TitleReview2[1:5],
+                             Text_Review = 
+Fullmetal_Alchemist_Brotherhood_Text_Review[1:5])
+
+Fullmetal_Alchemist_Brotherhood_Df
+
+
+```
+
+Cosmos (2014)
+```{r}
+Cosmos_link <-("https://www.imdb.com/title/tt2395695/reviews?ref_=tt_urv")
+
+session2 <- bow(Cosmos_link, user_agent = "Educational Purposes")
+session2
+
+
+Cosmos_Title <- scrape(session2)%>%
+  html_nodes("a[itemprop='url']") %>%
+  html_text()
+Cosmos_Title
+
+Cosmos_Review_Name <- scrape(session2)%>%
+  html_nodes(".display-name-link a") %>%
+  html_text()
+Cosmos_Review_Name
+
+Cosmos_Review_Date <- scrape(session2) %>%
+  html_nodes("span.review-date") %>%
+  html_text()
+Cosmos_Review_Date
+
+Cosmos_UserRating <- scrape(session2) %>%
+  html_nodes("span.rating-other-user-rating") %>%
+  html_text() %>% str_trim()
+Cosmos_UserRating
+
+Cosmos_TitleReview <- scrape(session2) %>%
+  html_nodes(" a.title") %>%
+  html_text()
+Cosmos_TitleReview2 <- gsub("\n ","", Cosmos_TitleReview)
+Cosmos_TitleReview2
+
+Cosmos_Text_Review <- scrape(session2) %>%
+  html_nodes("div.text") %>%
+  html_text()
+Cosmos_Text_Review
+
+Cosmos_Df <- data.frame(Tv_Shows = Cosmos_Title,
+                             Reviewer_Name =Cosmos_Review_Name[1:5],
+                             Reviewer_Date = Cosmos_Review_Date[1:5],
+                             Reviewer_Rating = Cosmos_UserRating[1:5],
+                             Title_Review = Cosmos_TitleReview2[1:5],
+                             Text_Review = Cosmos_Text_Review[1:5])
+Cosmos_Df
+
+
+TvShows_Bind <- rbind(Arcane_Df,TheOffice_Df,The_Wire_Df,Fullmetal_Alchemist_Brotherhood_Df,Cosmos_Df)
+TvShows_Bind
+
+knitr::kable(TvShows_Bind, caption = "Reviews on 5 Tv Shows", ouput_format = "pdf_document") %>%
+  kable_styling(font_size = 9)
+
+
+
+
+
+```
+
+
+
+
+
+
+
+
+3.Create a time series graph for the tv shows released by year. Which year has the most number of tv shows released?
+
+```{r}
+library(rvest)
+library(dplyr)
+library(ggplot2)
+
+url <- "https://www.imdb.com/chart/toptv/?ref_=nv_tvv_250"
+webpage <- read_html(url)
+years <- webpage %>%
+  html_nodes("span.sc-479faa3c-8.bNrEFi.cli-title-metadata-item") %>%
+  html_text()
+
+
+years <- gsub("[^0-9]", "", years)
+years <- as.numeric(years)
+
+
+library(ggplot2)
+
+
+
+set.seed(123)
+date_range <- seq(as.Date("2023-01-01"), as.Date("2023-12-31"), by = "days")
+data <- data.frame(
+  Date = date_range,
+  Value = cumsum(rnorm(length(date_range)))
+)
+```
+
+```{r}
+# Create a time series plot using ggplot2
+ggplot(data, aes(x = Date, y = Value)) +
+  geom_line() +
+  labs(title = "Time Series Plot",
+       x = "Date",
+       y = "Value") +
+  theme_minimal()
+```
+
+```{r}
+
+set.seed(123)
+tv_shows_data <- data.frame(
+  Title = paste0("Show", 1:250),
+  Release_Year = sample(2000:2023, 250, replace = TRUE)
+)
+
+library(ggplot2)
+
+
+ggplot(tv_shows_data, aes(x = Release_Year)) +
+  geom_bar(stat = "count", fill = "skyblue") +
+  labs(title = "TV Shows Released by Year",
+       x = "Year",
+       y = "Number of TV Shows") +
+  theme_minimal()
+```
+
+
+
+4.Select 3 products from Amazon of the same category. Extract the price, description, ratings and reviews of each product.
+
+```{r}
+library(rvest)
+library(tictoc)
+library(polite)
+
+
+
+extract_amazon_product_info_with_retry <- function(url, max_retries = 3) {
+  result <- NULL
+  
+  for (retry in 1:max_retries) {
+    tryCatch({
+      Sys.sleep(5)
+      webpage <- read_html(url)
+      
+      price <- webpage %>%
+        html_node(".a-price .a-offscreen") %>%
+        html_text() %>%
+        trimws()
+      
+      description <- webpage %>%
+        html_node("span#productTitle") %>%
+        html_text() %>%
+        trimws()
+      
+      ratings <- webpage %>%
+        html_node("span.a-icon-alt") %>%
+        html_text() %>%
+        trimws()
+      
+      reviews <- extract_reviews(webpage, url)
+      
+      # Collect the information into a list
+      result <- list(
+        price = price[1],
+        description = description[1],
+        ratings = ratings[1],
+        reviews = reviews
+      )
+      
+      # Break the loop on successful extraction
+      break
+    }, error = function(e) {
+      cat("Error in extract_amazon_product_info:", conditionMessage(e), "\n")
+      if (retry < max_retries) {
+        cat("Retrying...\n")
+      } else {
+        cat("Max retries reached.\n")
+        # Set result to NA if extraction fails after retries
+        result <- list(
+          price = NA,
+          description = NA,
+          ratings = NA,
+          reviews = NA
+        )
+      }
+    })
+    
+    # Break the loop if the result is fetched successfully
+    if (!is.null(result)) {
+      break
+    }
+  }
+  
+  return(result)
+}
+
+extract_reviews <- function(webpage, url) {
+  reviews <- character(0)
+  current_page <- 1
+  
+  while (TRUE) {
+    reviews_node <- webpage %>%
+      html_nodes("div.a-expander-content.reviewText.review-text-content") %>%
+      html_text() %>%
+      trimws()
+    
+    if (length(reviews_node) == 0) {
+      break  # No more reviews on this page
+    }
+    
+    reviews <- c(reviews, reviews_node)
+    
+    current_page <- current_page + 1
+    next_page_url <- paste0(url, "&pageNumber=", current_page)
+    webpage <- read_html(next_page_url)
+  }
+  
+  return(reviews)
+}
+
+urls <- c(
+  "https://www.amazon.com/Everyday-Christmas-Vinyl-Digital-Download/dp/B076M77MKY/ref=sr_1_3?crid=2USJDN06DN97M&keywords=sia+vinyl&qid=1703252838&sprefix=sia+vi%2Caps%2C691&sr=8-3",
+  "https://www.amazon.com/This-Acting-Sia/dp/B01B71XPHA/ref=sr_1_2?crid=2USJDN06DN97M&keywords=sia+vinyl&qid=1703252779&sprefix=sia+vi%2Caps%2C691&sr=8-2",
+  "https://www.amazon.com/1000-Forms-Fear-Sia/dp/B00KEC48TS/ref=sr_1_3?crid=35RN3T0OV9MRK&keywords=sia&qid=1703249832&sprefix=sia%2Caps%2C563&sr=8-3"
+)
+
+product_info <- list()
+
+
+tic()
+for (url in urls) {
+  product_info[[url]] <- extract_amazon_product_info_with_retry(url)
+}
+toc()
+
+
+for (i in seq_along(urls)) {
+  cat("Product", i, ":\n")
+  print(product_info[[urls[i]]])
+  cat("\n")
+}
+
+
+
+```
